@@ -3,4 +3,4 @@ spring:
     cloud.stream.bindings.output:
         content-type: application/json
         destination: verifications
-server.port: ${PORT:8080}
+server.port: ${PORT:8090}

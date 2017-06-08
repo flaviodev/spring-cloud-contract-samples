@@ -15,7 +15,7 @@ then:
 		method 'POST'
 		url '/check'
 		body(
-				age: value(consumer(regex('[0-1][0-9]')))
+				age: value(consumer(regex('[0-2][0-9]')))
 		)
 		headers {
 			header 'Content-Type', 'application/json'

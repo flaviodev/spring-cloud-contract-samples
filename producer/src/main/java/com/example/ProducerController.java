@@ -8,51 +8,57 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ProducerController {
 
-	private final PersonCheckingService personCheckingService;
+    private final PersonCheckingService personCheckingService;
 
-	public ProducerController(PersonCheckingService personCheckingService) {
-		this.personCheckingService = personCheckingService;
-	}
+    public ProducerController(PersonCheckingService personCheckingService) {
+        this.personCheckingService = personCheckingService;
+    }
 
-	@RequestMapping(value = "/check",
-			method=RequestMethod.POST,
-			consumes="application/json",
-			produces="application/json")
-	public Response check(@RequestBody PersonToCheck personToCheck) {
-		return null;
-	}
-	
+    @RequestMapping(value = "/check",
+            method = RequestMethod.POST,
+            consumes = "application/json",
+            produces = "application/json")
+    public Response check(@RequestBody PersonToCheck personToCheck) {
+
+        if (personCheckingService.shouldGetBeer(personToCheck)) {
+
+            return new Response(BeerCheckStatus.OK);
+        }
+
+        return new Response(BeerCheckStatus.NOT_OK);
+    }
+
 }
 
 interface PersonCheckingService {
-	boolean shouldGetBeer(PersonToCheck personToCheck);
+    boolean shouldGetBeer(PersonToCheck personToCheck);
 }
 
 class PersonToCheck {
-	public int age;
+    public int age;
 
-	public PersonToCheck(int age) {
-		this.age = age;
-	}
+    public PersonToCheck(int age) {
+        this.age = age;
+    }
 
-	public PersonToCheck() {
-	}
+    public PersonToCheck() {
+    }
 }
 
 class Response {
-	public BeerCheckStatus status;
-	
-	Response(BeerCheckStatus status) {
-		this.status = status;
-	}
+    public BeerCheckStatus status;
+
+    Response(BeerCheckStatus status) {
+        this.status = status;
+    }
 }
 
 enum BeerCheckStatus {
-	OK, NOT_OK
+    OK, NOT_OK
 }
 
 /*
-		if (personCheckingService.shouldGetBeer(personToCheck)) {
+        if (personCheckingService.shouldGetBeer(personToCheck)) {
 			return new Response(BeerCheckStatus.OK);
 		}
 		return new Response(BeerCheckStatus.NOT_OK);
